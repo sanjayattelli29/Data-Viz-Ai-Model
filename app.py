@@ -250,6 +250,5 @@ with app.app_context():
 if __name__ == '__main__':
     # Load models at startup
     load_models()
-    # Run the app
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    # Run the app on a unique port (2341)
+    app.run(host='0.0.0.0', port=2341, debug=False)
