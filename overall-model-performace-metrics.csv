@@ -1,0 +1,19 @@
+Model,Metric,Value
+Overall Score Model,MAE,0.8491902196168291
+Overall Score Model,MSE,2.492311990888527
+Overall Score Model,RMSE,1.5787057961787963
+Overall Score Model,R² Score,0.7440900347851255
+Quality Label Model,Accuracy,0.9854862119013063
+Quality Label Model,Balanced Accuracy,0.659255129485871
+Quality Label Model,Precision,0.9811955728069931
+Quality Label Model,Recall,0.9854862119013063
+Quality Label Model,F1-Score,0.9833362083095385
+Quality Label Model,Cohen's Kappa,0.9668508464500843
+Quality Label Model,ROC-AUC,0.9949142788496221
+Quality Label Model,Log Loss,0.058354419982874564
+Quality Label Model,Hinge Loss,N/A
+Quality Label Model,Gini Coefficient,0.9898285576992443
+Metric Scores Model,MAE,1.797512256191816
+Metric Scores Model,MSE,26.622259304145235
+Metric Scores Model,RMSE,5.159676279006779
+Metric Scores Model,R² Score,0.6477205472327545

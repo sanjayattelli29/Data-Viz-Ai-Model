@@ -1,0 +1,96 @@
+{
+    "input_features": [
+        "Row_Count",
+        "Column_Count",
+        "File_Size_MB",
+        "Numeric_Columns_Count",
+        "Categorical_Columns_Count",
+        "Date_Columns_Count",
+        "Missing_Values_Pct",
+        "Duplicate_Records_Count",
+        "Outlier_Rate",
+        "Inconsistency_Rate",
+        "Data_Type_Mismatch_Rate",
+        "Null_vs_NaN_Distribution",
+        "Cardinality_Categorical",
+        "Target_Imbalance",
+        "Feature_Importance_Consistency",
+        "Class_Overlap_Score",
+        "Label_Noise_Rate",
+        "Feature_Correlation_Mean",
+        "Range_Violation_Rate",
+        "Mean_Median_Drift",
+        "Data_Freshness",
+        "Anomaly_Count",
+        "Encoding_Coverage_Rate",
+        "Variance_Threshold_Check",
+        "Data_Density_Completeness",
+        "Domain_Constraint_Violations"
+    ],
+    "metric_score_features": [
+        "Row_Count_Score",
+        "Missing_Values_Pct_Score",
+        "Duplicate_Records_Count_Score",
+        "Outlier_Rate_Score",
+        "Inconsistency_Rate_Score",
+        "Data_Type_Mismatch_Rate_Score",
+        "Null_vs_NaN_Distribution_Score",
+        "Cardinality_Categorical_Score",
+        "Target_Imbalance_Score",
+        "Feature_Importance_Consistency_Score",
+        "Class_Overlap_Score_Score",
+        "Label_Noise_Rate_Score",
+        "Feature_Correlation_Mean_Score",
+        "Range_Violation_Rate_Score",
+        "Mean_Median_Drift_Score",
+        "Anomaly_Count_Score",
+        "Encoding_Coverage_Rate_Score",
+        "Variance_Threshold_Check_Score",
+        "Data_Density_Completeness_Score",
+        "Domain_Constraint_Violations_Score"
+    ],
+    "label_classes": [
+        "Excellent",
+        "Good",
+        "Moderate"
+    ],
+    "training_data_file": "c:\\Users\\ATTELLI SANJAY KUMAR\\Desktop\\New Version\\add score\\results\\scored_data_quality_20250522_223301.csv",
+    "training_samples": 8268,
+    "testing_samples": 2067,
+    "timestamp": "20250522_225338",
+    "models": {
+        "overall_score_model": {
+            "file": "c:\\Users\\ATTELLI SANJAY KUMAR\\Desktop\\New Version\\model trained\\models\\tabnet_score_model_20250522_225338.pkl",
+            "metrics": {
+                "MAE": 0.8491902196168291,
+                "MSE": 2.492311990888527,
+                "RMSE": 1.5787057961787963,
+                "R\u00b2 Score": 0.7440900347851255
+            }
+        },
+        "label_model": {
+            "file": "c:\\Users\\ATTELLI SANJAY KUMAR\\Desktop\\New Version\\model trained\\models\\tabnet_label_model_20250522_225338.pkl",
+            "metrics": {
+                "Accuracy": 0.9854862119013063,
+                "Balanced Accuracy": 0.659255129485871,
+                "Precision": 0.9811955728069931,
+                "Recall": 0.9854862119013063,
+                "F1-Score": 0.9833362083095385,
+                "Cohen's Kappa": 0.9668508464500843,
+                "ROC-AUC": 0.9949142788496221,
+                "Log Loss": 0.058354419982874564,
+                "Hinge Loss": null,
+                "Gini Coefficient": 0.9898285576992443
+            }
+        },
+        "metric_scores_model": {
+            "file": "c:\\Users\\ATTELLI SANJAY KUMAR\\Desktop\\New Version\\model trained\\models\\tabnet_metric_scores_model_20250522_225338.pkl",
+            "metrics": {
+                "MAE": 1.797512256191816,
+                "MSE": 26.622259304145235,
+                "RMSE": 5.159676279006779,
+                "R\u00b2 Score": 0.6477205472327545
+            }
+        }
+    }
+}

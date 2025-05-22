@@ -1,0 +1,13 @@
+flask
+flask-cors
+gunicorn
+numpy
+pandas
+scikit-learn
+pytorch-tabnet
+torch
+joblib
+werkzeug
+itsdangerous
+jinja2
+click

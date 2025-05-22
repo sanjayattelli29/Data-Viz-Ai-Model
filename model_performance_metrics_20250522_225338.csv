@@ -1,0 +1,99 @@
+Model,Metric,Value
+Overall Score Model,MAE,0.8491902196168291
+Overall Score Model,MSE,2.492311990888527
+Overall Score Model,RMSE,1.5787057961787963
+Overall Score Model,R² Score,0.7440900347851255
+Quality Label Model,Accuracy,0.9854862119013063
+Quality Label Model,Balanced Accuracy,0.659255129485871
+Quality Label Model,Precision,0.9811955728069931
+Quality Label Model,Recall,0.9854862119013063
+Quality Label Model,F1-Score,0.9833362083095385
+Quality Label Model,Cohen's Kappa,0.9668508464500843
+Quality Label Model,ROC-AUC,0.9949142788496221
+Quality Label Model,Log Loss,0.058354419982874564
+Quality Label Model,Hinge Loss,N/A
+Quality Label Model,Gini Coefficient,0.9898285576992443
+Metric Scores Model,MAE,1.797512256191816
+Metric Scores Model,MSE,26.622259304145235
+Metric Scores Model,RMSE,5.159676279006779
+Metric Scores Model,R² Score,0.6477205472327545
+Individual Metric: Row_Count_Score,MAE,0.12551580565067413
+Individual Metric: Row_Count_Score,MSE,0.042682020545690785
+Individual Metric: Row_Count_Score,RMSE,0.20659627427833926
+Individual Metric: Row_Count_Score,R² Score,0.0
+Individual Metric: Missing_Values_Pct_Score,MAE,1.6800414005421644
+Individual Metric: Missing_Values_Pct_Score,MSE,11.518256077084112
+Individual Metric: Missing_Values_Pct_Score,RMSE,3.393855635863746
+Individual Metric: Missing_Values_Pct_Score,R² Score,0.6395492216091483
+Individual Metric: Duplicate_Records_Count_Score,MAE,4.955584754445557
+Individual Metric: Duplicate_Records_Count_Score,MSE,101.81003073687253
+Individual Metric: Duplicate_Records_Count_Score,RMSE,10.090095675308165
+Individual Metric: Duplicate_Records_Count_Score,R² Score,0.5648175796737
+Individual Metric: Outlier_Rate_Score,MAE,0.9793552385762976
+Individual Metric: Outlier_Rate_Score,MSE,5.698080014554613
+Individual Metric: Outlier_Rate_Score,RMSE,2.3870651466926103
+Individual Metric: Outlier_Rate_Score,R² Score,0.04309227405664762
+Individual Metric: Inconsistency_Rate_Score,MAE,1.5694713834292886
+Individual Metric: Inconsistency_Rate_Score,MSE,3.966801135637995
+Individual Metric: Inconsistency_Rate_Score,RMSE,1.9916829907487774
+Individual Metric: Inconsistency_Rate_Score,R² Score,0.9521362376953042
+Individual Metric: Data_Type_Mismatch_Rate_Score,MAE,1.449121598685255
+Individual Metric: Data_Type_Mismatch_Rate_Score,MSE,14.512176873830912
+Individual Metric: Data_Type_Mismatch_Rate_Score,RMSE,3.809485119255739
+Individual Metric: Data_Type_Mismatch_Rate_Score,R² Score,0.36844890432364497
+Individual Metric: Null_vs_NaN_Distribution_Score,MAE,1.6569629183816748
+Individual Metric: Null_vs_NaN_Distribution_Score,MSE,7.999670639747182
+Individual Metric: Null_vs_NaN_Distribution_Score,RMSE,2.82836890092986
+Individual Metric: Null_vs_NaN_Distribution_Score,R² Score,0.9849520408699216
+Individual Metric: Cardinality_Categorical_Score,MAE,7.6549633340200955
+Individual Metric: Cardinality_Categorical_Score,MSE,207.58330960800666
+Individual Metric: Cardinality_Categorical_Score,RMSE,14.407751719404615
+Individual Metric: Cardinality_Categorical_Score,R² Score,0.6815629011738893
+Individual Metric: Target_Imbalance_Score,MAE,1.1221956552949341
+Individual Metric: Target_Imbalance_Score,MSE,8.959162586227835
+Individual Metric: Target_Imbalance_Score,RMSE,2.9931860259976886
+Individual Metric: Target_Imbalance_Score,R² Score,0.9631603059777658
+Individual Metric: Feature_Importance_Consistency_Score,MAE,1.0255556218682924
+Individual Metric: Feature_Importance_Consistency_Score,MSE,3.5598814585382055
+Individual Metric: Feature_Importance_Consistency_Score,RMSE,1.8867648127252654
+Individual Metric: Feature_Importance_Consistency_Score,R² Score,0.988641670411981
+Individual Metric: Class_Overlap_Score_Score,MAE,0.8513095991358874
+Individual Metric: Class_Overlap_Score_Score,MSE,2.4046730684743745
+Individual Metric: Class_Overlap_Score_Score,RMSE,1.5507008313902377
+Individual Metric: Class_Overlap_Score_Score,R² Score,0.9964136961283753
+Individual Metric: Label_Noise_Rate_Score,MAE,0.8672190754322483
+Individual Metric: Label_Noise_Rate_Score,MSE,1.256092473128753
+Individual Metric: Label_Noise_Rate_Score,RMSE,1.1207553136741102
+Individual Metric: Label_Noise_Rate_Score,R² Score,0.2865413650439024
+Individual Metric: Feature_Correlation_Mean_Score,MAE,1.0968244068162363
+Individual Metric: Feature_Correlation_Mean_Score,MSE,6.717880922256602
+Individual Metric: Feature_Correlation_Mean_Score,RMSE,2.5918875211429606
+Individual Metric: Feature_Correlation_Mean_Score,R² Score,0.9471998141043084
+Individual Metric: Range_Violation_Rate_Score,MAE,1.1447152250794668
+Individual Metric: Range_Violation_Rate_Score,MSE,2.0153095189398056
+Individual Metric: Range_Violation_Rate_Score,RMSE,1.4196159758680533
+Individual Metric: Range_Violation_Rate_Score,R² Score,0.8586658837385165
+Individual Metric: Mean_Median_Drift_Score,MAE,0.9327821573775117
+Individual Metric: Mean_Median_Drift_Score,MSE,3.1340401996689127
+Individual Metric: Mean_Median_Drift_Score,RMSE,1.7703220610015886
+Individual Metric: Mean_Median_Drift_Score,R² Score,0.7295760098742994
+Individual Metric: Anomaly_Count_Score,MAE,3.7980932463717725
+Individual Metric: Anomaly_Count_Score,MSE,121.4993068042022
+Individual Metric: Anomaly_Count_Score,RMSE,11.022672398479518
+Individual Metric: Anomaly_Count_Score,R² Score,0.768912294411632
+Individual Metric: Encoding_Coverage_Rate_Score,MAE,1.6581112674081966
+Individual Metric: Encoding_Coverage_Rate_Score,MSE,6.8889505497681425
+Individual Metric: Encoding_Coverage_Rate_Score,RMSE,2.62468103772023
+Individual Metric: Encoding_Coverage_Rate_Score,R² Score,0.9876811267487996
+Individual Metric: Variance_Threshold_Check_Score,MAE,0.4163792843843464
+Individual Metric: Variance_Threshold_Check_Score,MSE,5.284121516178092
+Individual Metric: Variance_Threshold_Check_Score,RMSE,2.298721713513424
+Individual Metric: Variance_Threshold_Check_Score,R² Score,0.35244677838544225
+Individual Metric: Data_Density_Completeness_Score,MAE,1.6296230736941488
+Individual Metric: Data_Density_Completeness_Score,MSE,10.212721039720163
+Individual Metric: Data_Density_Completeness_Score,RMSE,3.1957348199936995
+Individual Metric: Data_Density_Completeness_Score,R² Score,0.7054852738792454
+Individual Metric: Domain_Constraint_Violations_Score,MAE,1.3364200772422472
+Individual Metric: Domain_Constraint_Violations_Score,MSE,7.382038839522238
+Individual Metric: Domain_Constraint_Violations_Score,RMSE,2.7169907691271677
+Individual Metric: Domain_Constraint_Violations_Score,R² Score,0.1351275665486762
