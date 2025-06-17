@@ -6,6 +6,9 @@ import pandas as pd
 from flask import Flask, request, jsonify, render_template
 from datetime import datetime
 from flask_cors import CORS
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -57,10 +60,7 @@ def load_models():
         
         models = {}
         
-        # Load models
-        with open(model_files['overall_score_model'], 'rb') as f:
-            models['score_model'] = pickle.load(f)
-        
+        # Load models (we only need label_model and metric_scores_model now)
         with open(model_files['label_model'], 'rb') as f:
             models['label_model'] = pickle.load(f)
         
@@ -85,8 +85,142 @@ def load_models():
         print(f"Error loading models: {e}")
         return False
 
+def calculate_formula_quality_score(metrics):
+    """Calculate data quality score using formula-based approach"""
+    
+    # Normalization helper functions
+    def invert(metric, max_val):
+        return max(0, 1 - metric / max_val)
+    
+    def passthrough(metric):
+        return max(0, min(metric, 1))
+    
+    def bounded(metric, min_val, max_val):
+        if max_val <= min_val:
+            return 0
+        return max(0, min((metric - min_val) / (max_val - min_val), 1))
+    
+    # Weights for each metric
+    weights = {
+        "Missing_Values_Pct": 0.08,
+        "Data_Density_Completeness": 0.05,
+        "Null_vs_NaN_Distribution": 0.03,
+        "Domain_Constraint_Violations": 0.05,
+        "Data_Type_Mismatch_Rate": 0.05,
+        "Range_Violation_Rate": 0.03,
+        "Encoding_Coverage_Rate": 0.04,
+        "Duplicate_Records_Count": 0.05,
+        "Inconsistency_Rate": 0.05,
+        "Variance_Threshold_Check": 0.04,
+        "Feature_Correlation_Mean": 0.02,
+        "Anomaly_Count": 0.03,
+        "Outlier_Rate": 0.05,
+        "Mean_Median_Drift": 0.04,
+        "Class_Overlap_Score": 0.05,
+        "Label_Noise_Rate": 0.03,
+        "Data_Freshness": 0.05,
+        "Target_Imbalance": 0.04,
+        "Feature_Importance_Consistency": 0.05,
+        "Row_Count": 0.005,
+        "Column_Count": 0.01,
+        "Cardinality_Categorical": 0.01
+    }
+    
+    # Calculate normalized scores for each metric
+    scores = {}
+    
+    # Only calculate scores for metrics that exist in the input
+    if "Missing_Values_Pct" in metrics:
+        scores["Missing_Values_Pct"] = invert(metrics["Missing_Values_Pct"], 0.3)
+    
+    if "Data_Density_Completeness" in metrics:
+        scores["Data_Density_Completeness"] = passthrough(metrics["Data_Density_Completeness"])
+    
+    if "Null_vs_NaN_Distribution" in metrics:
+        scores["Null_vs_NaN_Distribution"] = invert(metrics["Null_vs_NaN_Distribution"], 1.0)
+    
+    if "Domain_Constraint_Violations" in metrics:
+        scores["Domain_Constraint_Violations"] = invert(metrics["Domain_Constraint_Violations"], 50)
+    
+    if "Data_Type_Mismatch_Rate" in metrics:
+        scores["Data_Type_Mismatch_Rate"] = invert(metrics["Data_Type_Mismatch_Rate"], 0.5)
+    
+    if "Range_Violation_Rate" in metrics:
+        scores["Range_Violation_Rate"] = invert(metrics["Range_Violation_Rate"], 0.05)
+    
+    if "Encoding_Coverage_Rate" in metrics:
+        scores["Encoding_Coverage_Rate"] = passthrough(metrics["Encoding_Coverage_Rate"])
+    
+    if "Duplicate_Records_Count" in metrics:
+        scores["Duplicate_Records_Count"] = invert(metrics["Duplicate_Records_Count"], 500)
+    
+    if "Inconsistency_Rate" in metrics:
+        scores["Inconsistency_Rate"] = invert(metrics["Inconsistency_Rate"], 0.5)
+    
+    if "Variance_Threshold_Check" in metrics:
+        scores["Variance_Threshold_Check"] = passthrough(metrics["Variance_Threshold_Check"])
+    
+    if "Feature_Correlation_Mean" in metrics:
+        scores["Feature_Correlation_Mean"] = passthrough(metrics["Feature_Correlation_Mean"])
+    
+    if "Anomaly_Count" in metrics:
+        scores["Anomaly_Count"] = invert(metrics["Anomaly_Count"], 100)
+    
+    if "Outlier_Rate" in metrics:
+        scores["Outlier_Rate"] = invert(metrics["Outlier_Rate"], 0.3)
+    
+    if "Mean_Median_Drift" in metrics:
+        scores["Mean_Median_Drift"] = invert(metrics["Mean_Median_Drift"], 0.5)
+    
+    if "Class_Overlap_Score" in metrics:
+        scores["Class_Overlap_Score"] = invert(metrics["Class_Overlap_Score"], 1.0)
+    
+    if "Label_Noise_Rate" in metrics:
+        scores["Label_Noise_Rate"] = invert(metrics["Label_Noise_Rate"], 0.2)
+    
+    if "Data_Freshness" in metrics:
+        scores["Data_Freshness"] = invert(metrics["Data_Freshness"], 365)
+    
+    if "Target_Imbalance" in metrics:
+        scores["Target_Imbalance"] = passthrough(1 - abs(metrics["Target_Imbalance"] - 0.5) * 2)
+    
+    if "Feature_Importance_Consistency" in metrics:
+        scores["Feature_Importance_Consistency"] = passthrough(metrics["Feature_Importance_Consistency"])
+    
+    if "Row_Count" in metrics:
+        scores["Row_Count"] = bounded(metrics["Row_Count"], 1000, 100000)
+    
+    if "Column_Count" in metrics:
+        scores["Column_Count"] = bounded(metrics["Column_Count"], 5, 50)
+    
+    if "Cardinality_Categorical" in metrics:
+        scores["Cardinality_Categorical"] = bounded(metrics["Cardinality_Categorical"], 1, 50)
+    
+    # Calculate weighted total (only for metrics that exist)
+    total_weight = sum(weights[metric] for metric in scores.keys() if metric in weights)
+    if total_weight == 0:
+        return 0.0
+    
+    weighted_sum = sum(scores[metric] * weights.get(metric, 0) for metric in scores.keys())
+    
+    # Normalize by actual total weight and scale to 100
+    final_score = (weighted_sum / total_weight) * 100
+    
+    return round(final_score, 2)
+
+def get_quality_label_from_score(score):
+    """Convert formula score to quality label"""
+    if score >= 90:
+        return "Excellent"
+    elif score >= 75:
+        return "Good"
+    elif score >= 60:
+        return "Moderate"
+    else:
+        return "Poor"
+
 def predict_quality(features_dict):
-    """Make predictions using the loaded models"""
+    """Make predictions using the loaded models and formula"""
     try:
         # Get feature order from metadata
         feature_order = metadata['input_features']
@@ -105,26 +239,27 @@ def predict_quality(features_dict):
         # Make predictions
         predictions = {}
         
-        # Overall quality score
-        score_pred = models['score_model'].predict(features_scaled)
-        # Ensure score is within 0-100 range
-        raw_score = float(score_pred[0])
-        predictions['overall_score'] = min(100.0, max(0.0, raw_score))
+        # Use formula-based scoring for overall quality score
+        formula_score = calculate_formula_quality_score(features_dict)
+        predictions['overall_score'] = formula_score
+        predictions['score_method'] = "formula_based"
         
-        # Add a note if the score was capped
-        if raw_score > 100.0:
-            predictions['score_note'] = f"Original score ({raw_score:.1f}) was capped at 100.0"
-        
-        # Quality label
+        # Quality label from TabNet model (keep original model prediction)
         label_pred_encoded = models['label_model'].predict(features_scaled)
         label_pred_proba = models['label_model'].predict_proba(features_scaled)
-        predictions['quality_label'] = models['label_encoder'].inverse_transform(label_pred_encoded)[0]
+        predictions['quality_label_model'] = models['label_encoder'].inverse_transform(label_pred_encoded)[0]
         predictions['label_probabilities'] = {
             label: float(prob) for label, prob in 
             zip(models['label_encoder'].classes_, label_pred_proba[0])
         }
         
-        # Individual metric scores
+        # Also provide formula-based label for comparison
+        predictions['quality_label_formula'] = get_quality_label_from_score(formula_score)
+        
+        # Use formula-based label as primary
+        predictions['quality_label'] = predictions['quality_label_formula']
+        
+        # Individual metric scores using TabNet model
         metric_scores_pred = models['metric_model'].predict(features_scaled)
         metric_features = metadata['metric_score_features']
         predictions['metric_scores'] = {
@@ -145,6 +280,13 @@ def predict_quality(features_dict):
         metric_scores = predictions['metric_scores']
         worst_metrics = sorted(metric_scores.items(), key=lambda x: x[1])[:3]
         predictions['top_issues'] = {metric: score for metric, score in worst_metrics}
+        
+        # Add explanation of scoring method
+        predictions['scoring_explanation'] = {
+            "overall_score": "Calculated using weighted formula-based approach",
+            "metric_scores": "Predicted using TabNet neural network model",
+            "quality_label": "Derived from formula-based overall score"
+        }
         
         return predictions, 200
     except Exception as e:
@@ -175,7 +317,8 @@ def get_metadata():
         "metric_score_features": metadata["metric_score_features"],
         "label_classes": metadata["label_classes"],
         "model_version": metadata.get("model_version", "1.0.0"),
-        "training_timestamp": metadata.get("training_timestamp", "unknown")
+        "training_timestamp": metadata.get("training_timestamp", "unknown"),
+        "scoring_method": "hybrid_formula_and_tabnet"
     }
     
     return jsonify(api_metadata)
@@ -228,7 +371,42 @@ def sample_input():
     
     return jsonify({
         "sample_input": sample,
-        "usage": "POST this JSON structure to /predict endpoint"
+        "usage": "POST this JSON structure to /predict endpoint",
+        "scoring_method": "Formula-based overall score + TabNet metric scores"
+    })
+
+@app.route('/formula-weights', methods=['GET'])
+def get_formula_weights():
+    """Return the weights used in formula calculation"""
+    weights = {
+        "Missing_Values_Pct": 0.08,
+        "Data_Density_Completeness": 0.05,
+        "Null_vs_NaN_Distribution": 0.03,
+        "Domain_Constraint_Violations": 0.05,
+        "Data_Type_Mismatch_Rate": 0.05,
+        "Range_Violation_Rate": 0.03,
+        "Encoding_Coverage_Rate": 0.05,
+        "Duplicate_Records_Count": 0.05,
+        "Inconsistency_Rate": 0.05,
+        "Variance_Threshold_Check": 0.04,
+        "Feature_Correlation_Mean": 0.02,
+        "Anomaly_Count": 0.05,
+        "Outlier_Rate": 0.05,
+        "Mean_Median_Drift": 0.04,
+        "Class_Overlap_Score": 0.05,
+        "Label_Noise_Rate": 0.03,
+        "Data_Freshness": 0.05,
+        "Target_Imbalance": 0.04,
+        "Feature_Importance_Consistency": 0.05,
+        "Row_Count": 0.01,
+        "Column_Count": 0.01,
+        "Cardinality_Categorical": 0.01
+    }
+    
+    return jsonify({
+        "formula_weights": weights,
+        "total_weight": sum(weights.values()),
+        "description": "Weights used in formula-based quality score calculation"
     })
 
 # Create a function to load models at startup
